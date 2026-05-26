@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — Lumen</title>
+  <meta name="description" content="Sign in to your Lumen account." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            ink: {
+              950: '#08080A',
+              900: '#0E0E11',
+              800: '#16161B',
+              700: '#1E1E25',
+              600: '#26262F',
+            },
+          },
+          boxShadow: {
+            'card': '0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03)',
+            'glow': '0 0 0 1px rgba(99,102,241,0.4), 0 8px 24px -4px rgba(99,102,241,0.35)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html, body { background-color: #08080A; }
+    body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; }
+    .bg-grid {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+    }
+    .ring-focus:focus { outline: none; box-shadow: 0 0 0 1px rgba(99,102,241,0.7), 0 0 0 4px rgba(99,102,241,0.15); }
+    input[type="checkbox"] { accent-color: #6366f1; }
+    .btn-shimmer {
+      background-image: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #6366f1 100%);
+      background-size: 200% 100%;
+      transition: background-position 0.6s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-shimmer:hover { background-position: 100% 0; }
+    .btn-shimmer:active { transform: translateY(1px); }
+  </style>
+</head>
+<body class="min-h-screen text-zinc-200 antialiased selection:bg-indigo-500/30 selection:text-white">
+
+  <div class="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden">
+
+    <!-- Backdrop layers -->
+    <div class="pointer-events-none absolute inset-0 bg-grid"></div>
+    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[640px] w-[640px] rounded-full bg-indigo-500/20 blur-[120px]"></div>
+    <div class="pointer-events-none absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-fuchsia-500/10 blur-[100px]"></div>
+
+    <!-- Main column -->
+    <div class="relative w-full max-w-md">
+
+      <!-- Brand -->
+      <div class="flex items-center justify-center gap-2.5 mb-8">
+        <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 shadow-glow flex items-center justify-center">
+          <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 text-white" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+            <path d="M12 2 L4 7 v10 l8 5 8-5 V7 Z" />
+            <path d="M12 2 v20" />
+            <path d="M4 7 l8 5 8-5" />
+          </svg>
+        </div>
+        <span class="text-[15px] font-semibold tracking-tight text-white">Lumen</span>
+      </div>
+
+      <!-- Card -->
+      <div class="rounded-2xl bg-ink-900/70 backdrop-blur-xl border border-white/[0.06] shadow-card p-7 sm:p-8">
+
+        <!-- Heading -->
+        <div class="text-center">
+          <h1 class="text-[22px] font-semibold tracking-tight text-white">Welcome back</h1>
+          <p class="mt-1.5 text-sm text-zinc-400">Sign in to continue to your workspace</p>
+        </div>
+
+        <!-- Social auth -->
+        <div class="mt-7 grid grid-cols-2 gap-3">
+          <button type="button" aria-label="Sign in with GitHub" class="group inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-sm font-medium text-zinc-200 transition-colors ring-focus">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true" style="width:16px;height:16px">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.97 3.23 9.18 7.71 10.67.56.1.77-.24.77-.54 0-.27-.01-1.16-.02-2.1-3.14.68-3.8-1.34-3.8-1.34-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.28.93.1-.72.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15.89-.25 1.85-.37 2.8-.38.95.01 1.91.13 2.81.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.33-2.64 5.29-5.15 5.57.4.34.76 1.02.76 2.06 0 1.49-.01 2.69-.01 3.05 0 .3.2.65.78.54 4.47-1.5 7.7-5.71 7.7-10.67C23.25 5.48 18.27.5 12 .5Z"/>
+            </svg>
+            <span>GitHub</span>
+          </button>
+          <button type="button" aria-label="Sign in with Google" class="group inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-sm font-medium text-zinc-200 transition-colors ring-focus">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" aria-hidden="true" style="width:16px;height:16px">
+              <path fill="#EA4335" d="M12 10.2v3.8h5.3c-.22 1.4-1.6 4.1-5.3 4.1-3.2 0-5.8-2.65-5.8-5.9s2.6-5.9 5.8-5.9c1.82 0 3.04.78 3.74 1.44l2.55-2.45C16.5 3.78 14.46 3 12 3 6.94 3 2.85 7.06 2.85 12.1S6.94 21.2 12 21.2c6.94 0 9.15-4.85 9.15-9.05 0-.6-.07-1.07-.15-1.53H12Z"/>
+            </svg>
+            <span>Google</span>
+          </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="relative my-6">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-white/[0.07]"></div>
+          </div>
+          <div class="relative flex justify-center">
+            <span class="bg-ink-900/0 px-3 text-[11px] uppercase tracking-[0.14em] text-zinc-500">or continue with email</span>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-4" novalidate>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
+            <div class="relative">
+              <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 6 9-6" />
+                </svg>
+              </span>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="you@company.com"
+                class="ring-focus w-full h-10 rounded-lg bg-ink-800/70 border border-white/[0.07] pl-9 pr-3 text-sm text-white placeholder:text-zinc-500 transition-colors hover:border-white/[0.12]"
+              />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="password" class="block text-sm font-medium text-zinc-300">Password</label>
+              <a href="#" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Forgot password?</a>
+            </div>
+            <div class="relative">
+              <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-500">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+                  <rect x="4" y="11" width="16" height="10" rx="2" />
+                  <path d="M8 11V7a4 4 0 1 1 8 0v4" />
+                </svg>
+              </span>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="••••••••"
+                class="ring-focus w-full h-10 rounded-lg bg-ink-800/70 border border-white/[0.07] pl-9 pr-10 text-sm text-white placeholder:text-zinc-500 transition-colors hover:border-white/[0.12]"
+              />
+              <button type="button" id="togglePwd" aria-label="Show password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-500 hover:text-zinc-300 transition-colors">
+                <svg id="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me -->
+          <label class="flex items-center gap-2 select-none cursor-pointer pt-1">
+            <input type="checkbox" class="h-4 w-4 rounded border-white/20 bg-ink-800 ring-focus" />
+            <span class="text-sm text-zinc-400">Remember me for 30 days</span>
+          </label>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-shimmer mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg text-sm font-semibold text-white shadow-glow ring-focus">
+            <span>Sign in</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <p class="mt-6 text-center text-sm text-zinc-500">
+        Don't have an account?
+        <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">Sign up</a>
+      </p>
+      <p class="mt-8 text-center text-[11px] text-zinc-600">
+        Protected by industry-standard encryption.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Password visibility toggle
+    const toggle = document.getElementById('togglePwd');
+    const pwd = document.getElementById('password');
+    const eye = document.getElementById('eye');
+    toggle.addEventListener('click', () => {
+      const isHidden = pwd.type === 'password';
+      pwd.type = isHidden ? 'text' : 'password';
+      toggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+      eye.innerHTML = isHidden
+        ? '<path d="M3 3l18 18"/><path d="M10.6 6.1A10 10 0 0 1 22 12s-1.2 2.4-3.6 4.3"/><path d="M6.6 6.6A10 10 0 0 0 2 12s3.5 7 10 7c1.6 0 3-.3 4.3-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'
+        : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>';
+    });
+
+    // Lightweight submit demo (prevents actual nav)
+    document.querySelector('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<svg class="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:16px;height:16px"><path d="M12 3a9 9 0 1 0 9 9" /></svg><span>Signing in…</span>';
+      setTimeout(() => { btn.disabled = false; btn.innerHTML = original; }, 1200);
+    });
+  </script>
+</body>
+</html>
+                                                                                    
