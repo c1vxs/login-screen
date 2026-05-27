@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "description": "Dark-mode login screen with a Node.js/Express authentication backend, deployable as Vercel serverless functions.",
-  "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

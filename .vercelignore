@@ -1,0 +1,7 @@
+# Files to exclude from Vercel deployment.
+# server.js is for local development only — Vercel runs api/index.js as a serverless function instead.
+server.js
+node_modules
+.git
+.gitignore
+README.md
