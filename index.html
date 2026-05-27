@@ -83,13 +83,13 @@
       <div class="rounded-2xl bg-ink-900/70 backdrop-blur-xl border border-white/[0.06] shadow-card p-7 sm:p-8">
 
         <!-- Heading -->
-        <div class="text-center">
+        <div class="text-center" data-replace-on-success>
           <h1 class="text-[22px] font-semibold tracking-tight text-white">Welcome back</h1>
           <p class="mt-1.5 text-sm text-zinc-400">Sign in to continue to your workspace</p>
         </div>
 
         <!-- Social auth -->
-        <div class="mt-7 grid grid-cols-2 gap-3">
+        <div class="mt-7 grid grid-cols-2 gap-3" data-replace-on-success>
           <button type="button" aria-label="Sign in with GitHub" class="group inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-sm font-medium text-zinc-200 transition-colors ring-focus">
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true" style="width:16px;height:16px">
               <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.97 3.23 9.18 7.71 10.67.56.1.77-.24.77-.54 0-.27-.01-1.16-.02-2.1-3.14.68-3.8-1.34-3.8-1.34-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.28.93.1-.72.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15.89-.25 1.85-.37 2.8-.38.95.01 1.91.13 2.81.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.33-2.64 5.29-5.15 5.57.4.34.76 1.02.76 2.06 0 1.49-.01 2.69-.01 3.05 0 .3.2.65.78.54 4.47-1.5 7.7-5.71 7.7-10.67C23.25 5.48 18.27.5 12 .5Z"/>
@@ -105,7 +105,7 @@
         </div>
 
         <!-- Divider -->
-        <div class="relative my-6">
+        <div class="relative my-6" data-replace-on-success>
           <div class="absolute inset-0 flex items-center" aria-hidden="true">
             <div class="w-full border-t border-white/[0.07]"></div>
           </div>
@@ -115,7 +115,7 @@
         </div>
 
         <!-- Form -->
-        <form class="space-y-4" novalidate>
+        <form id="loginForm" class="space-y-4" novalidate>
 
           <!-- Email -->
           <div>
@@ -176,8 +176,22 @@
             <span class="text-sm text-zinc-400">Remember me for 30 days</span>
           </label>
 
+          <!-- Error slot -->
+          <div
+            id="formError"
+            role="alert"
+            class="hidden items-start gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2.5 text-sm text-rose-300"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0" style="width:14px;height:14px" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4"/>
+              <path d="M12 16h.01"/>
+            </svg>
+            <span id="formErrorText"></span>
+          </div>
+
           <!-- Submit -->
-          <button type="submit" class="btn-shimmer mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg text-sm font-semibold text-white shadow-glow ring-focus">
+          <button type="submit" id="submitBtn" class="btn-shimmer mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg text-sm font-semibold text-white shadow-glow ring-focus disabled:opacity-70 disabled:cursor-not-allowed">
             <span>Sign in</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
               <path d="M5 12h14" />
@@ -185,10 +199,24 @@
             </svg>
           </button>
         </form>
+
+        <!-- Success state (hidden until login succeeds) -->
+        <div id="successPanel" class="hidden text-center py-2">
+          <div class="mx-auto h-12 w-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400" style="width:22px;height:22px" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-white">You're signed in</h2>
+          <p class="text-sm text-zinc-400 mt-1">Welcome back, <span id="successName" class="text-white font-medium">there</span>.</p>
+          <button type="button" id="signOutBtn" class="mt-6 inline-flex items-center justify-center h-9 px-4 rounded-lg text-sm font-medium text-zinc-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] transition-colors ring-focus">
+            Sign out
+          </button>
+        </div>
       </div>
 
       <!-- Footer -->
-      <p class="mt-6 text-center text-sm text-zinc-500">
+      <p class="mt-6 text-center text-sm text-zinc-500" data-replace-on-success>
         Don't have an account?
         <a href="#" class="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">Sign up</a>
       </p>
@@ -212,15 +240,109 @@
         : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>';
     });
 
-    // Lightweight submit demo (prevents actual nav)
-    document.querySelector('form').addEventListener('submit', (e) => {
+    // --- Auth wiring ------------------------------------------------------
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('formError');
+    const errorText = document.getElementById('formErrorText');
+    const successPanel = document.getElementById('successPanel');
+    const successName = document.getElementById('successName');
+    const signOutBtn = document.getElementById('signOutBtn');
+
+    const SPINNER = '<svg class="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:16px;height:16px" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"/></svg><span>Signing in…</span>';
+
+    function showError(message) {
+      errorText.textContent = message;
+      errorBox.classList.remove('hidden');
+      errorBox.classList.add('flex');
+    }
+
+    function clearError() {
+      errorBox.classList.add('hidden');
+      errorBox.classList.remove('flex');
+    }
+
+    function showSuccess(user) {
+      successName.textContent = user.name || user.email;
+      form.classList.add('hidden');
+      // Hide the divider + social buttons + heading too for a cleaner success state
+      document.querySelectorAll('[data-replace-on-success]').forEach((el) => el.classList.add('hidden'));
+      successPanel.classList.remove('hidden');
+    }
+
+    function showLoginForm() {
+      successPanel.classList.add('hidden');
+      form.classList.remove('hidden');
+      document.querySelectorAll('[data-replace-on-success]').forEach((el) => el.classList.remove('hidden'));
+      form.reset();
+      clearError();
+    }
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      const original = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<svg class="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:16px;height:16px"><path d="M12 3a9 9 0 1 0 9 9" /></svg><span>Signing in…</span>';
-      setTimeout(() => { btn.disabled = false; btn.innerHTML = original; }, 1200);
+      clearError();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showError('Please enter your email and password.');
+        return;
+      }
+
+      const originalHTML = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = SPINNER;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          showError(data.error || 'Sign-in failed. Please try again.');
+          return;
+        }
+
+        // Persist token so /api/auth/me works on refresh
+        try {
+          sessionStorage.setItem('lumen.token', data.token);
+        } catch { /* sessionStorage may be unavailable */ }
+
+        showSuccess(data.user);
+      } catch (err) {
+        showError('Could not reach the server. Check your connection and try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
+      }
     });
+
+    signOutBtn.addEventListener('click', () => {
+      try { sessionStorage.removeItem('lumen.token'); } catch {}
+      showLoginForm();
+    });
+
+    // If we already have a valid token (e.g. after a page reload), restore the signed-in state
+    (async function restoreSession() {
+      let token;
+      try { token = sessionStorage.getItem('lumen.token'); } catch { return; }
+      if (!token) return;
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          try { sessionStorage.removeItem('lumen.token'); } catch {}
+          return;
+        }
+        const data = await res.json();
+        showSuccess(data.user);
+      } catch { /* offline — leave the form visible */ }
+    })();
   </script>
 </body>
 </html>

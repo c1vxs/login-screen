@@ -1,78 +1,105 @@
-# Lumen — Login Screen
+# Lumen Auth
 
-A polished dark-mode login screen built with **TailwindCSS**, designed as a Figma-to-code style portfolio piece.
+A small full-stack authentication demo: a polished dark-mode login screen wired to a Node.js / Express REST API. Built as a portfolio piece to demonstrate Figma-to-code translation, TailwindCSS, and backend JS.
 
-## What's in here
+**Live demo:** _add your Vercel URL here once deployed_
+**Source:** _add your GitHub URL here once pushed_
 
-- `index.html` — the full login screen, single file, no build step required.
-- Built with TailwindCSS (via CDN for zero-config previewing).
-- Includes: email/password inputs with icons, password visibility toggle, social auth buttons (GitHub, Google), "remember me" checkbox, loading state on submit, accessible focus rings.
+## Demo credentials
 
-## Preview locally
-
-Just open `index.html` in your browser — no server needed.
-
-```bash
-# macOS
-open index.html
-
-# Windows
-start index.html
-
-# Linux
-xdg-open index.html
+```
+Email:    demo@lumen.app
+Password: password123
 ```
 
-If you want a local server with hot reload:
+## Stack
 
-```bash
-npx serve .
+- **Frontend** — single-file HTML with TailwindCSS (via CDN). Accessible form, password visibility toggle, inline error messaging, loading state, post-login "signed in" view, session-restore on reload.
+- **Backend** — Node.js + Express. Two endpoints: `POST /api/auth/login` and `GET /api/auth/me`. Passwords hashed with bcrypt. Sessions issued as JWTs.
+- **Hosting** — deployable as a single Vercel project: the static `index.html` is served from the edge, the Express app runs as a serverless function.
+
+## Project layout
+
+```
+login-screen/
+├── index.html        # frontend (Tailwind via CDN, no build step)
+├── server.js         # local dev server: serves frontend + mounts API
+├── api/
+│   └── index.js      # Express auth API (also the Vercel serverless entry)
+├── package.json
+├── vercel.json       # routes /api/* → /api on Vercel
+├── .gitignore
+└── README.md
 ```
 
-## Deploy to Vercel (recommended, ~2 minutes)
+## Run locally
 
-1. Create a new GitHub repo and push these files to it:
+```bash
+npm install
+npm run dev
+```
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: login screen"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/login-screen.git
-   git push -u origin main
-   ```
+Then open <http://localhost:3001>.
 
-2. Go to [vercel.com/new](https://vercel.com/new), sign in with GitHub, and import the repo.
-3. Vercel auto-detects it as a static site. Click **Deploy**. Done — you'll get a `your-project.vercel.app` URL.
+## API
 
-## Deploy to Netlify (alternative)
+### POST /api/auth/login
 
-1. Go to [app.netlify.com/drop](https://app.netlify.com/drop).
-2. Drag the folder containing `index.html` into the drop zone.
-3. You'll get a live URL instantly. To get a custom subdomain, sign in and rename the site.
+Request:
 
-## Customize
+```json
+{ "email": "demo@lumen.app", "password": "password123" }
+```
 
-- **Brand name**: Find `Lumen` in `index.html` and replace it.
-- **Brand color**: The accent color is indigo. Swap `indigo-*` and `from-indigo-400 to-indigo-600` with another Tailwind palette (e.g., `emerald`, `rose`, `cyan`).
-- **Background grid intensity**: Adjust the `rgba(255,255,255,0.035)` values in the `.bg-grid` style.
+Success (200):
 
-## Add to your resume
+```json
+{
+  "token": "<jwt>",
+  "user": { "id": "1", "email": "demo@lumen.app", "name": "Demo User" }
+}
+```
 
-Once deployed, add a line like one of these to your projects section:
+Errors: `400` (missing/invalid input) · `401` (bad credentials).
 
-> **Lumen Login** — Designed and built a production-quality dark-mode authentication screen with TailwindCSS. Implemented accessible focus states, password visibility toggle, and loading states. [Live demo](https://your-project.vercel.app) · [Source](https://github.com/YOUR_USERNAME/login-screen)
+### GET /api/auth/me
 
-Or in your skills section, you can now legitimately list:
+Requires `Authorization: Bearer <jwt>`.
 
-- **TailwindCSS** — utility-first styling, responsive design, custom theme extension
-- **HTML/CSS/JS** — accessible forms, focus management, micro-interactions
+Success (200):
 
-## Going further (optional)
+```json
+{ "user": { "id": "1", "email": "demo@lumen.app", "name": "Demo User" } }
+```
 
-If you want to demonstrate even more Tailwind chops, consider:
+Errors: `401` (missing/invalid/expired token).
 
-- Converting this to a real Vite + Tailwind project (build step, proper purging). Tutorial: [tailwindcss.com/docs/installation/using-vite](https://tailwindcss.com/docs/installation/using-vite).
-- Adding form validation with error states (red border + helper text).
-- Adding a matching dark/light mode toggle.
-- Building a second component (e.g., the dashboard that the user lands on after sign-in) and linking them.
+## Security notes (what's real vs. what's demo-only)
+
+- Passwords are stored as bcrypt hashes (cost factor 10).
+- JWTs are signed with HS256 and expire in 7 days.
+- Login responds with the same generic message and roughly the same timing whether the email is unknown or the password is wrong, to avoid user-enumeration via timing or response shape.
+- The "database" is a hard-coded user array — fine for a portfolio demo; swap in Postgres / Prisma / Supabase for anything real.
+- `JWT_SECRET` defaults to a placeholder so the demo runs out of the box. **Set a real secret via the `JWT_SECRET` env var in production / on Vercel.**
+
+## Deploy to Vercel
+
+1. Push to GitHub (any name; this folder is the repo root).
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
+3. Under **Environment Variables**, add `JWT_SECRET` (any long random string — `openssl rand -hex 32` gives you a good one).
+4. Click **Deploy**. The static frontend is served from `/`, and `/api/*` routes hit the Express function automatically.
+
+## Add to your CV / resume
+
+> **Lumen Auth** — Personal project
+> Full-stack authentication demo. Dark-mode login screen built with TailwindCSS; Node.js + Express REST API with bcrypt password hashing and JWT-based sessions; deployed as Vercel serverless functions.
+> **Tech:** Node.js, Express, JWT, bcrypt, TailwindCSS, JavaScript, Vercel
+> [Live demo](https://...) · [Source](https://github.com/...)
+
+## Going further
+
+- Add a sign-up endpoint (`POST /api/auth/register`) with email-uniqueness checks.
+- Swap the in-memory user store for SQLite (better-sqlite3) or Postgres on Neon / Supabase.
+- Add rate limiting on `/api/auth/login` (e.g. express-rate-limit) to defend against credential stuffing.
+- Move the JWT into an `HttpOnly` cookie instead of `sessionStorage` (more secure, more code).
+- Add Cypress / Playwright tests for the login flow.

@@ -1,0 +1,27 @@
+{
+  "name": "lumen-auth",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dark-mode login screen with a Node.js/Express authentication backend, deployable as Vercel serverless functions.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "express",
+    "tailwindcss",
+    "authentication",
+    "jwt",
+    "portfolio"
+  ],
+  "license": "MIT"
+}
